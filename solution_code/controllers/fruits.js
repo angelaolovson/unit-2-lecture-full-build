@@ -4,13 +4,23 @@ const startFruits = require('../db/fruitSeedData.js')
 const Fruit = require('../models/fruit.js')
 
 router.post('/', async (req, res) => {
+	console.log(req.body)
+	req.body.readyToEat = req.body.readyToEat === "on" ? true : false;
 	const fruit = await Fruit.create(req.body);
-	res.send(fruit);
+	res.redirect("/fruits")
 });
+
+// New
+router.get("/new", (req, res) => {
+	res.render("fruits/new.ejs")
+})
 
 // Index...show all fruits
 router.get('/', async (req, res) => {
+	// Fruit.find() is a Promise
+	// Promise is resoveld or rejected 
 	const fruits = await Fruit.find({});
+	// then run the next line of code
 	// res.send(fruits);
 	res.render("fruits/index.ejs" , {fruits});
 });
